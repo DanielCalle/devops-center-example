@@ -1,8 +1,12 @@
 {
   "packageDirectories": [
     {
-      "path": "force-app",
+      "path": "force-dev",
       "default": true
+    },
+    {
+      "path": "force-dev2",
+      "default": false
     }
   ],
   "name": "devops-center-example",
