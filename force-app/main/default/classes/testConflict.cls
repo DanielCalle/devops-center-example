@@ -12,6 +12,7 @@ public with sharing class testConflict {
             //do something
         } else {
             //do something else
+
         }
     }
 }
