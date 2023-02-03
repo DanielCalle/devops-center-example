@@ -53,6 +53,10 @@
                 <behavior>Edit</behavior>
                 <field>coffee__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Nubiforce__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
