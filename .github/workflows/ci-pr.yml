@@ -12,36 +12,37 @@ on:
 
 # Jobs to be executed
 jobs:
-    lint-code:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v3
-          - uses: actions/setup-java@v3
-            with:
-              distribution: 'temurin'
-              java-version: '11'
-          - uses: pmd/pmd-github-action@v1
-            id: pmd
-            with:
-              version: '6.40.0'
-              sourcePath: 'force-app'
-              rulesets: 'apex-ruleset.xml'
-          - name: Fail build if there are violations
-            if: steps.pmd.outputs.violations != 0
-            run: exit 1
-    scratch-org-test:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v3
-          # Setup .npmrc file to publish to npm
-          - uses: actions/setup-node@v3
-            with:
-              node-version: '16.x'
-              registry-url: 'https://registry.npmjs.org'
-          # Install Salesforce CLI
-          - name: 'Install Salesforce CLI'
-            run: |
-              npm install sfdx-cli --location=global
-              nodeInstallPath=$(npm config get prefix)
-              echo "$nodeInstallPath/bin" >> $GITHUB_PATH
-              sfdx --version
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install SFDX CLI and Scanner
+        run: |
+          npm install sfdx-cli
+          node_modules/sfdx-cli/bin/run plugins:install @salesforce/sfdx-scanner
+      - name: Run SFDX Scanner - Report findings as comments
+        uses: mitchspano/sfdx-scan-pull-request@v0.1.7
+        with:
+          pmdconfig: apex_ruleset.xml
+          severity-threshold: 4
+          strictly-enforced-rules: '[{ "engine": "pmd" }]'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  scratch-org-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      # Install Salesforce CLI
+      - name: 'Install Salesforce CLI'
+        run: |
+          npm install sfdx-cli --location=global
+          nodeInstallPath=$(npm config get prefix)
+          echo "$nodeInstallPath/bin" >> $GITHUB_PATH
+          sfdx --version
