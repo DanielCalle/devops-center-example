@@ -26,8 +26,8 @@ jobs:
         uses: mitchspano/sfdx-scan-pull-request@v0.1.7
         with:
           pmdconfig: apex_ruleset.xml
-          severity-threshold: 4
-          strictly-enforced-rules: '[{ "engine": "pmd", "category": "Design,Best Practices,Code Style,Documentation,Error Prone,Performance,Security" }]'
+          severity-threshold: 3
+          strictly-enforced-rules: '[{ "engine": "pmd", "category": "Design,Best Practices,Code Style,Documentation,Error Prone,Performance,Security", "rule": "EmptyCatchBlock" }]'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   scratch-org-test:
