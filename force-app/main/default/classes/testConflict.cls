@@ -1,6 +1,7 @@
 public with sharing class testConflict {
 
     public String a;
+    public Integer b;
 
     public testConflict() {
 
