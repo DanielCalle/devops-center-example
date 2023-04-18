@@ -1,0 +1,8 @@
+envs {
+  envsCloud = [
+    {
+      uuid = "5ba6e241-1563-410a-a23c-a4921041194a"
+      folderName = "dacalle.security"
+    },
+  ]
+}
